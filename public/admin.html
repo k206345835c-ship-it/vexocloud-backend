@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<body style="background:#111;color:white;text-align:center;font-family:sans-serif">
+<h1>Admin</h1>
+
+<input id="name" placeholder="Nazwa">
+<input id="price" placeholder="Cena">
+<button onclick="add()">Dodaj item</button>
+
+<br><br>
+
+<input id="amount" placeholder="Kwota">
+<button onclick="code()">Generuj kod</button>
+
+<script>
+function add(){
+fetch("/admin/add-item",{method:"POST",
+headers:{"Content-Type":"application/json"},
+body:JSON.stringify({name:name.value,price:price.value})})
+.then(r=>r.text()).then(alert);
+}
+function code(){
+fetch("/admin/create-code",{method:"POST",
+headers:{"Content-Type":"application/json"},
+body:JSON.stringify({amount:amount.value})})
+.then(r=>r.text()).then(alert);
+}
+</script>
+</body>
+</html>

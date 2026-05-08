@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<body style="background:#0f172a;color:white;text-align:center;font-family:sans-serif">
+
+<h1>Panel</h1>
+<div id="user"></div>
+
+<h2>Sklep</h2>
+<div id="shop"></div>
+
+<h2>Doładuj</h2>
+<input id="code"><button onclick="topup()">OK</button>
+
+<script>
+fetch("/api/user").then(r=>r.json()).then(u=>{
+document.getElementById("user").innerHTML =
+`<img src="${u.avatar}" width=80><br>${u.username}<br>Portfel: ${u.wallet} zł`;
+});
+
+fetch("/api/items").then(r=>r.json()).then(items=>{
+items.forEach(i=>{
+shop.innerHTML+=`${i.name} - ${i.price} zł <button onclick="buy('${i._id}')">Kup</button><br>`;
+});
+});
+
+function buy(id){
+fetch("/api/buy/"+id,{method:"POST"}).then(r=>r.text()).then(alert).then(()=>location.reload());
+}
+function topup(){
+fetch("/api/topup",{method:"POST",headers:{"Content-Type":"application/json"},
+body:JSON.stringify({code:code.value})})
+.then(r=>r.text()).then(alert).then(()=>location.reload());
+}
+</script>
+</body>
+</html>
